@@ -1,0 +1,82 @@
+# Environment variables
+.env
+
+# Python cache
+__pycache__/
+*.py[cod]
+*$py.class
+*.so
+.Python
+
+# Conda environments
+*.conda/
+conda-meta/
+
+# Virtual environments (if using venv instead of conda)
+venv/
+env/
+ENV/
+env.bak/
+venv.bak/
+
+# IDE
+.vscode/
+.idea/
+*.swp
+*.swo
+*~
+
+# Generated audio files
+*.mp3
+*.wav
+meme_audio*.mp3
+chattts_meme_audio*.mp3
+
+# Jupyter Notebook
+.ipynb_checkpoints
+
+# Distribution / packaging
+build/
+develop-eggs/
+dist/
+downloads/
+eggs/
+.eggs/
+lib/
+lib64/
+parts/
+sdist/
+var/
+wheels/
+*.egg-info/
+.installed.cfg
+*.egg
+
+# PyTorch
+*.index
+*.pth
+*.pt
+
+# Model cache
+.cache/
+cache/
+
+# OS
+.DS_Store
+Thumbs.db
+
+# Logs
+*.log
+
+# Backup files
+*.backup
+*.bak
+
+# Gradio cache
+gradio_cached_examples/
+flagged/
+
+# Asset folder
+asset/"index/Teacher_infer.index" 
+"asset/Embed.safetensors" 
+"asset/gpt/model.safetensors" 
