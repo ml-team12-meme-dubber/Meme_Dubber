@@ -13,6 +13,8 @@ This voice model (`.pth`) converts the TTS-generated audio into a specific targe
 
 The project includes a user-friendly Gradio web interface, allowing users to upload meme images, preview and download audio, choose between TTS engines, and apply custom voice models via a simple web interface.
 
+(再改)
+
 ---
 
 ## Prerequisites
@@ -26,7 +28,7 @@ The project includes a user-friendly Gradio web interface, allowing users to upl
 ---
 
 ## Installation
-Installing fairseq on Windows requires compiling C++ code.   
+Installing `fairseq` on Windows requires compiling C++ code.   
 If you do **not** run the terminal as an **Administrator**, the installation may fail.  
 Therefore, it is strongly recommended to run the terminal as **Administrator** throughout the entire process.
 
@@ -65,7 +67,7 @@ git clone https://github.com/ml-team12-meme-dubber/Meme_Dubber Meme_Dubber
 cd Meme_Dubber
 pip install -r requirements.txt
 ```
-This will install:
+This will install: (再改)
 * Common packages such as librosa, soundfile, scikit-learn, faiss-cpu
 * fairseq from GitHub (requires C++ compilation)
 * The inferrvc package (in .whl format)
@@ -74,7 +76,7 @@ This will install:
 To avoid dependency conflicts between `gradio`, `gradio_client`, `websockets`, and `google-genai`, it is recommended to downgrade pip and install specific versions of these packages:
 ```bash
 # Downgrade pip to improve compatibility
-pip install pip==23.2.1
+python -m pip install pip==23.2.1
 
 # Install specific compatible versions
 pip install gradio==4.19.2
@@ -128,7 +130,10 @@ This ensures RVC uses FP32 inference on both CPU and GPU.
 ### 7. Configure Environment Variables:
 * Copy the example environment file and set your Google API key:
 ```bash
+# Linux/macOS
 cp .env.example .env
+# Windows
+copy .env.example .env
 ```
 
 * Edit `.env` and add:
@@ -152,16 +157,24 @@ conda activate Meme_env
 
 ```perl
 Meme_Dubber/
-├── asset/                 # ChatTTS model files (auto-downloaded)
-├── index/                 # RVC index files (.index) (NOT included in repo)
+├── asset/                    # ChatTTS model files (auto-downloaded)
+│   ├── Decoder.safetensors
+│   ├── DVAE.safetensors
+│   ├── Embed.safetensors
+│   ├── Vocos.safetensors
+│   ├── gpt/
+│   └── tokenizer/
+├── index/                    # RVC index files (.index) (NOT included in repo)
 │   └── .index
-├── model/                 # RVC model files (.pth) (NOT included in repo)
+├── model/                    # RVC model files (.pth) (NOT included in repo)
 │   └── .pth
-├── .env                   # API keys (user-created, not tracked by git)
-├── .env.example           # Template for environment variables
-├── meme_dubber.py         # Main application script
-├── README.md              # Project documentation
-└── requirements.txt       # Python dependencies
+├── .env                      # API keys (user-created, not tracked by git)
+├── .env.example              # Template for environment variables
+├── meme_dubber.py            # Main application script
+├── meme_audio_gtts.mp3       # Output from gTTS
+├── meme_audio_chattts.wav    # Output from ChatTTS
+├── README.md                 # Project documentation
+└── requirements.txt          # Python dependencies
 ```
 
 
@@ -207,6 +220,8 @@ python meme_dubber.py
 | Female → Lower-pitched Female | `-2 ~ -5` |
 | Pitch already matches target | `0` |
 ---
+
+(以下再改)
 
 ## Troubleshooting
 
