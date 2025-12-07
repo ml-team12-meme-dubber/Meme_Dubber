@@ -30,13 +30,13 @@ Installing fairseq on Windows requires compiling C++ code.
 If you do **not** run the terminal as an **Administrator**, the installation may fail.  
 Therefore, it is strongly recommended to run the terminal as **Administrator** throughout the entire process.
 
-1. **Create Conda Environment and Install Python**:
+### 1. Create Conda Environment and Install Python:
 ```bash
 conda create -n Meme_env python=3.10
 conda activate Meme_env
 ```
 
-2. **Install PyTorch**:
+### 2. Install PyTorch:
 * **CPU version**:
 ```bash
 pip install torch==2.9.0+cpu torchaudio==2.9.0+cpu torchvision==0.24.0+cpu --index-url https://download.pytorch.org/whl/cpu
@@ -47,7 +47,7 @@ pip install torch==2.9.0+cpu torchaudio==2.9.0+cpu torchvision==0.24.0+cpu --ind
 pip install torch torchvision torchaudio --index-url https://download.pytorch.org/whl/cu118
 ```
 
-3. **Install Microsoft Visual C++ Build Tools (C++ Compiler)**:  
+### 3. Install Microsoft Visual C++ Build Tools (C++ Compiler):  
 Installing `fairseq` requires compiling C++ extensions, so Windows users must install a C++ compiler.
 
 Follow these steps:
@@ -59,7 +59,7 @@ Follow these steps:
 
 > macOS and Linux usually come with a C++ compiler preinstalled, so this step is generally not needed on those systems.
 
-4. **Clone the Repository and Install Dependencies**:
+### 4. Clone the Repository and Install Dependencies:
 ```bash
 git clone https://github.com/ml-team12-meme-dubber/Meme_Dubber Meme_Dubber
 cd Meme_Dubber
@@ -70,7 +70,7 @@ This will install:
 * fairseq from GitHub (requires C++ compilation)
 * The inferrvc package (in .whl format)
 
-5. **Downgrade pip and Install Compatible Package Versions (to Avoid Dependency Conflicts)**:
+### 5. Downgrade pip and Install Compatible Package Versions (to Avoid Dependency Conflicts):
 To avoid dependency conflicts between `gradio`, `gradio_client`, `websockets`, and `google-genai`, it is recommended to downgrade pip and install specific versions of these packages:
 ```bash
 # Downgrade pip to improve compatibility
@@ -83,7 +83,7 @@ pip install websockets==15.0.1
 pip install google-genai==1.52.0
 ```
 
-6. **Modify `inferrvc` Source Code**:
+### 6. Modify `inferrvc` Source Code:
 (1) **Enable CPU Inference Mode**
 To run RVC inference **without** an NVIDIA GPU: 
 * Open the following file:  
@@ -125,7 +125,7 @@ self.is_half = False
 ```
 This ensures RVC uses FP32 inference on both CPU and GPU.
 
-7. **Configure Environment Variables**:
+### 7. Configure Environment Variables:
 * Copy the example environment file and set your Google API key:
 ```bash
 cp .env.example .env
@@ -197,7 +197,7 @@ python meme_dubber.py
 | `< 0` | Lowers pitch (deeper voice) |
 
 
-* 如何選擇 `f0_up_key` 值？  
+* Suggested Values by Scenario:  
 
 | Scenario | Suggested `f0_up_key` |
 | --- | --- |
