@@ -9,13 +9,9 @@ It can either extract **existing text** from the meme or generate **meme-style d
 
 The generated audio is then transformed into a custom voice using a model trained via **RVC WebUI** — an open-source interface for training voice models with **Retrieval-Based Voice Conversion (RVC)**.
 
-This voice model (in `.pth` format) converts the TTS-generated audio into a specific target voice, enabling highly personalized and expressive meme dubbing.  
+This voice model (`.pth`) converts the TTS-generated audio into a specific target voice, enabling highly personalized and expressive meme dubbing.  
 
 The project includes a user-friendly Gradio web interface, allowing users to upload meme images, preview and download audio, choose between TTS engines, and apply custom voice models via a simple web interface.
-
-> ⚠️ **Note:** This project is intended for **educational and personal use only**.  
-> We do **not** provide our teacher’s voice model due to **privacy concerns**.  
-> Please download other publicly available models from [Hugging Face (example)](https://huggingface.co/models?other=rvc&utm_source) for testing purposes.
 
 ---
 
@@ -30,116 +26,115 @@ The project includes a user-friendly Gradio web interface, allowing users to upl
 ---
 
 ## Installation
-Installing fairseq on Windows requires compiling C++ code. If you do **not** run the terminal as an **Administrator**, the installation may fail.
+Installing fairseq on Windows requires compiling C++ code.   
+If you do **not** run the terminal as an **Administrator**, the installation may fail.  
 Therefore, it is strongly recommended to run the terminal as **Administrator** throughout the entire process.
 
 1. **Create Conda Environment and Install Python**:
-
-   ```bash
-   conda create -n Meme_env python=3.10
-   conda activate Meme_env
-   ```
+```bash
+conda create -n Meme_env python=3.10
+conda activate Meme_env
+```
 
 2. **Install PyTorch**:
-   * **CPU version**:
-   ```bash
-   pip install torch==2.9.0+cpu torchaudio==2.9.0+cpu torchvision==0.24.0+cpu --index-url https://download.pytorch.org/whl/cpu
-   ```
+* **CPU version**:
+```bash
+pip install torch==2.9.0+cpu torchaudio==2.9.0+cpu torchvision==0.24.0+cpu --index-url https://download.pytorch.org/whl/cpu
+```
 
-   * **GPU version (CUDA 11.8)**:
-   ```bash
-   pip install torch torchvision torchaudio --index-url https://download.pytorch.org/whl/cu118
-   ```
+* **GPU version (CUDA 11.8)**:
+```bash
+pip install torch torchvision torchaudio --index-url https://download.pytorch.org/whl/cu118
+```
 
-3. **Install Microsoft Visual C++ Build Tools (C++ Compiler)**:
-   Installing `fairseq` requires compiling C++ extensions, so Windows users must install a C++ compiler.
+3. **Install Microsoft Visual C++ Build Tools (C++ Compiler)**:  
+Installing `fairseq` requires compiling C++ extensions, so Windows users must install a C++ compiler.
 
-   Follow these steps:
-   1. Go to https://visualstudio.microsoft.com/visual-cpp-build-tools/
-   2. Download and run the installer
-   3. Check the "C++ build tools" workload
-   4. Also check "Windows 10 SDK" or "Windows 11 SDK"
-   5. Install and restart your computer if required
+Follow these steps:
+1. Go to https://visualstudio.microsoft.com/visual-cpp-build-tools/
+2. Download and run the installer
+3. Check the "C++ build tools" workload
+4. Also check "Windows 10 SDK" or "Windows 11 SDK"
+5. Install and restart your computer if required
 
-   > macOS and Linux usually come with a C++ compiler preinstalled, so this step is generally not needed on those systems.
+> macOS and Linux usually come with a C++ compiler preinstalled, so this step is generally not needed on those systems.
 
 4. **Clone the Repository and Install Dependencies**:
-
-   ```bash
-   git clone https://github.com/ml-team12-meme-dubber/Meme_Dubber Meme_Dubber
-   cd Meme_Dubber
-   pip install -r requirements.txt
-   ```
-   This will install:
-   * Common packages such as librosa, soundfile, scikit-learn, faiss-cpu
-   * fairseq from GitHub (requires C++ compilation)
-   * The inferrvc package (in .whl format)
+```bash
+git clone https://github.com/ml-team12-meme-dubber/Meme_Dubber Meme_Dubber
+cd Meme_Dubber
+pip install -r requirements.txt
+```
+This will install:
+* Common packages such as librosa, soundfile, scikit-learn, faiss-cpu
+* fairseq from GitHub (requires C++ compilation)
+* The inferrvc package (in .whl format)
 
 5. **Downgrade pip and Install Compatible Package Versions (to Avoid Dependency Conflicts)**:
-   To avoid dependency conflicts between `gradio`, `gradio_client`, `websockets`, and `google-genai`, it is recommended to downgrade pip and install specific versions of these packages:
-   ```bash
-   # Downgrade pip to improve compatibility
-   pip install pip==23.2.1
+To avoid dependency conflicts between `gradio`, `gradio_client`, `websockets`, and `google-genai`, it is recommended to downgrade pip and install specific versions of these packages:
+```bash
+# Downgrade pip to improve compatibility
+pip install pip==23.2.1
 
-   # Install specific compatible versions
-   pip install gradio==4.19.2
-   pip install gradio_client==0.10.1
-   pip install websockets==15.0.1
-   pip install google-genai==1.52.0
-   ```
+# Install specific compatible versions
+pip install gradio==4.19.2
+pip install gradio_client==0.10.1
+pip install websockets==15.0.1
+pip install google-genai==1.52.0
+```
 
 6. **Modify `inferrvc` Source Code**:
-   (1) **Enable CPU Inference Mode**
-   To run RVC inference **without** an NVIDIA GPU: 
-   * Open the following file:  
-   ```bash
-   <your Conda environment path>\Lib\site-packages\inferrvc\pipeline.py
-   ```
+(1) **Enable CPU Inference Mode**
+To run RVC inference **without** an NVIDIA GPU: 
+* Open the following file:  
+```bash
+<your Conda environment path>\Lib\site-packages\inferrvc\pipeline.py
+```
 
-   * Locate the following line (approximately line 31):
-   ```python
-   bh, ah = torch.from_numpy(bh).to(_gpu, non_blocking=True), torch.from_numpy(ah).to(_gpu, non_blocking=True)
-   ```
+* Locate the following line (approximately line 31):
+```python
+bh, ah = torch.from_numpy(bh).to(_gpu, non_blocking=True), torch.from_numpy(ah).to(_gpu, non_blocking=True)
+```
 
-   * Replace it with:
-   ```py
-   device = "cuda" if torch.cuda.is_available() else "cpu"
-   bh, ah = torch.from_numpy(bh).to(device), torch.from_numpy(ah).to(device)
-   ```
+* Replace it with:
+```py
+device = "cuda" if torch.cuda.is_available() else "cpu"
+bh, ah = torch.from_numpy(bh).to(device), torch.from_numpy(ah).to(device)
+```
 
-   (2) **Ensure GPU Mode Works Properly**
-   `torchaudio`'s resample module does not support FP16 tensors and may raise an error like:
-   ```bash
-   RuntimeError: Input type (torch.cuda.HalfTensor) and weight type (torch.cuda.FloatTensor) should be the same
-   ```
+(2) **Ensure GPU Mode Works Properly**
+`torchaudio`'s resample module does not support FP16 tensors and may raise an error like:
+```bash
+RuntimeError: Input type (torch.cuda.HalfTensor) and weight type (torch.cuda.FloatTensor) should be the same
+```
 
-   To fix this, force the model to use FP32 (float32) instead:  
-   * Open the file:  
-   ```bash
-   <your Conda environment path>\Lib\site-packages\inferrvc\configs\config.py
-   ```
+To fix this, force the model to use FP32 (float32) instead:  
+* Open the file:  
+```bash
+<your Conda environment path>\Lib\site-packages\inferrvc\configs\config.py
+```
 
-   * Find all lines containing:
-   ```py
-   self.is_half = True
-   ```
+* Find all lines containing:
+```py
+self.is_half = True
+```
 
-   * Replace them with:
-   ```py
-   self.is_half = False
-   ```
-   This ensures RVC uses FP32 inference on both CPU and GPU.
+* Replace them with:
+```py
+self.is_half = False
+```
+This ensures RVC uses FP32 inference on both CPU and GPU.
 
 7. **Configure Environment Variables**:
-   Copy the example environment file and set your Google API key:
-   ```bash
-   cp .env.example .env
-   ```
+* Copy the example environment file and set your Google API key:
+```bash
+cp .env.example .env
+```
 
-   Edit `.env` and add:
-   ```
-   GOOGLE_API_KEY=your_actual_api_key_here
-   ```
+* Edit `.env` and add:
+```
+GOOGLE_API_KEY=your_actual_api_key_here
+```
 
 ---
 
@@ -150,33 +145,18 @@ Therefore, it is strongly recommended to run the terminal as **Administrator** t
 conda activate Meme_env
 ```
 
-1. **Start the application**:
-   ```bash
-   python meme_dubber.py
-   ```
+### 1. Placing Your RVC Models
+> **Note:** This project is intended for **educational and personal use only**.  
+> We do **not** provide our personal voice model due to **privacy concerns**.  
+> Please download other publicly available models from [Hugging Face (example)](https://huggingface.co/models?other=rvc&utm_source) for testing purposes.
 
-2. **Open your browser** and navigate to:
-   ```
-   http://127.0.0.1:7860
-   ```
-
-3. **Generate audio**:
-   - Upload a meme image (or paste from clipboard)
-   - Select your preferred TTS engine:
-     - **gTTS**: Faster, requires internet
-     - **ChatTTS**: Better quality, works offline (after initial setup)
-   - Click "Generate Audio Dub"
-   - View the extracted/generated text
-   - Listen to and download the generated audio!
-
----
-
-## Project Structure
-```
+```perl
 Meme_Dubber/
 ├── asset/                 # ChatTTS model files (auto-downloaded)
 ├── index/                 # RVC index files (.index) (NOT included in repo)
+│   └── .index
 ├── model/                 # RVC model files (.pth) (NOT included in repo)
+│   └── .pth
 ├── .env                   # API keys (user-created, not tracked by git)
 ├── .env.example           # Template for environment variables
 ├── meme_dubber.py         # Main application script
@@ -184,6 +164,48 @@ Meme_Dubber/
 └── requirements.txt       # Python dependencies
 ```
 
+
+### 2. Start the application:
+```bash
+python meme_dubber.py
+```
+
+### 3. Open your browser and navigate to:
+   ```
+   http://127.0.0.1:7860
+   ```
+
+### 4. Generate audio:
+- Upload a meme image (or paste from clipboard)
+- Select your preferred TTS engine:
+   - **gTTS**: Faster, requires internet
+   - **ChatTTS**: Better quality, works offline (after initial setup)
+- Click "Generate Audio Dub"
+- View the extracted/generated text
+- Listen to and download the generated audio!
+
+
+### 5. Adjust `f0_up_key` (Pitch Control)
+`f0_up_key` controls the pitch shift (in semitones) applied during RVC voice conversion.
+
+* Basic Meaning
+
+| Value | Effect |
+| --- | --- |
+| `0` | No pitch change |
+| `> 0` | Raises pitch (brighter voice) |
+| `< 0` | Lowers pitch (deeper voice) |
+
+
+* 如何選擇 `f0_up_key` 值？  
+
+| Scenario | Suggested `f0_up_key` |
+| --- | --- |
+| Male → Female | `+5 ~ +12` |
+| Female → Male | `-5 ~ -12` |
+| Male → Higher-pitched Male | `+2 ~ +5` |
+| Female → Lower-pitched Female | `-2 ~ -5` |
+| Pitch already matches target | `0` |
 ---
 
 ## Troubleshooting
