@@ -1,8 +1,13 @@
 # Meme Dubber
 
-**Meme Dubber** is an AI-powered system that generates speech from meme content and transforms it into a target voice using a model trained with Retrieval-Based Voice Conversion (RVC).
 ![Gradio Interface](images/interface.png)
+
+**Meme Dubber** is an AI-powered system that generates speech from meme content and transforms it into a target voice using a model trained with Retrieval-Based Voice Conversion (RVC).
+
+
+
 ---
+
 ## Features
 
 * **Text extraction & dialogue generation**  
@@ -222,9 +227,9 @@ Meme_Dubber/
 │   ├── gpt/
 │   └── tokenizer/
 ├── images/
+│   ├── inference.png
 │   ├── Output_with_text_Meme.png
-│   ├── flowchart.png
-│   └── result_example.jpg
+│   └── Output_without_text_Meme.png
 ├── index/                    # RVC index files (.index)
 │   └── Teacher_infer.index
 ├── model/                    # RVC model files (.pth)
@@ -303,9 +308,10 @@ The voice-converted audio can be previewed and downloaded via the Gradio interfa
 
 ### Demo 
 
+- **With text**: Extracts text from the meme image
 ![Meme with text](images/Output_with_text_Meme.png)
 
-
+- **Without text**: Generates meme-style dialogue  
 ![Meme without text](images/Output_without_text_Meme.png)
 
 
