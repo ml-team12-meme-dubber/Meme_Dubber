@@ -1,21 +1,24 @@
 # Meme Dubber
 
-**Meme Dubber** is an AI-powered project that extracts text from meme images and generates audio dubbing using **Google Gemini API** and **text-to-speech (TTS) engines**.  
-
-It can either extract **existing text** from the meme or generate **meme-style dialogue** using Gemini's vision capabilities. The text is then converted into speech via one of two TTS engines:  
-
-* **gTTS** – a fast, cloud-based Google Text-to-Speech engine
-* **ChatTTS** – a more natural-sounding, locally processed voice synthesis engine
-
-The generated audio is then transformed into a custom voice using a model trained via **RVC WebUI** — an open-source interface for training voice models with **Retrieval-Based Voice Conversion (RVC)**.
-
-This voice model (`.pth`) converts the TTS-generated audio into a specific target voice, enabling highly personalized and expressive meme dubbing.  
-
-The project includes a user-friendly Gradio web interface, allowing users to upload meme images, preview and download audio, choose between TTS engines, and apply custom voice models via a simple web interface.
-
-(再改)
+**Meme Dubber** is an AI-powered system that generates speech from meme content and transforms it into a target voice using a model trained with Retrieval-Based Voice Conversion (RVC).
 
 ---
+## Features
+
+* **Text extraction & dialogue generation**  
+  Extracts existing text from meme images or generates meme-style dialogue using the **Google Gemini API**.
+
+* **Multiple TTS backends**  
+  Converts text into speech using either **gTTS** or **ChatTTS**.
+
+* **Custom voice conversion (RVC)**  
+  Transforms synthesized speech into a target voice using **RVC models** trained via **RVC WebUI**.
+
+* **Web-based user interface**  
+  Provides a **Gradio web interface** for uploading images, selecting TTS engines, and downloading dubbed audio.
+
+---
+
 
 ## Prerequisites
 
@@ -52,7 +55,7 @@ pip install torch torchvision torchaudio --index-url https://download.pytorch.or
 ```
 
 > **Why CUDA 11.8?**  
-> RVC depends on multiple third-party libraries (e.g., PyTorch, faiss, fairseq),  
+> RVC depends on multiple third-party libraries (e.g., PyTorch, faiss, fairseq),
 > and **CUDA 11.8 is the only version that has been verified to work reliably**
 > with the complete RVC inference pipeline.
 
@@ -93,6 +96,7 @@ This will install the following key dependencies:
     
     Including `librosa`, `soundfile`, and `scikit-learn`, which are used for audio processing, feature handling, and utility functions.
 
+
 ### 5. Downgrade pip and Install Compatible Package Versions (to Avoid Dependency Conflicts):
 To avoid dependency conflicts between `gradio`, `gradio_client`, `websockets`, and `google-genai`, it is recommended to downgrade pip and install specific versions of these packages:
 ```bash
@@ -107,8 +111,7 @@ pip install google-genai==1.52.0
 ```
 
 ### 6. Modify `inferrvc` Source Code:
-(1) **Enable CPU Inference Mode**
-To run RVC inference **without** an NVIDIA GPU: 
+(1) **Enable CPU Inference Mode Works Properly**
 * Open the following file:  
 ```bash
 <your Conda environment path>\Lib\site-packages\inferrvc\pipeline.py
@@ -148,47 +151,81 @@ self.is_half = False
 ```
 This ensures RVC uses FP32 inference on both CPU and GPU.
 
+
 ### 7. Configure Environment Variables:
-* Copy the example environment file and set your Google API key:
+* Copy the example environment file:
+
 ```bash
 # Linux/macOS
 cp .env.example .env
+
 # Windows
 copy .env.example .env
 ```
 
-* Edit `.env` and add:
+* Edit `.env` and set your Google API key:
 ```
 GOOGLE_API_KEY=your_actual_api_key_here
+```
+Replace `your_actual_api_key_here` with the Google API key you obtained.
+
+
+### 8. Install ffmpeg (Windows Only)
+
+> **Note (Windows users):**  
+> ffmpeg is required for audio processing.  
+> Please make sure `ffmpeg` is installed and available in your system `PATH`.
+
+
+1. Download ffmpeg from the official website:  
+   https://ffmpeg.org/download.html
+
+2. Extract the archive and add the `bin/` directory to your system `PATH`.
+
+3. Verify installation:
+```bash
+ffmpeg -version
 ```
 
 ---
 
 ## Usage
 
-**Important:** Make sure your conda environment is activated before running:
+Make sure your conda environment is activated before running:
+
 ```bash
 conda activate Meme_env
 ```
 
 ### 1. Placing Your RVC Models
 > **Note:** This project is intended for **educational and personal use only**.  
-> We do **not** provide our personal voice model due to **privacy concerns**.  
-> Please download other publicly available models from [Hugging Face (example)](https://huggingface.co/models?other=rvc&utm_source) for testing purposes.
+> For demonstration purposes, the RVC model and index files are provided in the **Release** section.  
+> Due to **privacy concerns**, these files will be **removed after the project evaluation is completed**.  
+> If you would like to reproduce this project in the future, please download publicly available RVC models from  
+> [Hugging Face (example)](https://huggingface.co/models?other=rvc&utm_source).
 
-```perl
+
+Please download the following two files from the  
+[**Releases page**](https://github.com/ml-team12-meme-dubber/Meme_Dubber/releases/tag/RVC_model%26index):
+
+- `Teacher_infer.pth` — RVC model weights  
+- `Teacher_infer.index` — RVC voice feature index
+
+After downloading, place the files into the corresponding directories as shown below:
+
+```text
 Meme_Dubber/
-├── asset/                    # ChatTTS model files (auto-downloaded)
+├── asset/                    # ChatTTS model files (auto-downloaded after execution)
 │   ├── Decoder.safetensors
 │   ├── DVAE.safetensors
 │   ├── Embed.safetensors
 │   ├── Vocos.safetensors
 │   ├── gpt/
 │   └── tokenizer/
-├── index/                    # RVC index files (.index) (NOT included in repo)
-│   └── .index
-├── model/                    # RVC model files (.pth) (NOT included in repo)
-│   └── .pth
+├── index/                    # RVC index files (.index)
+│   └── Teacher_infer.index
+├── model/                    # RVC model files (.pth)
+│   └── Teacher_infer.pth
 ├── .env                      # API keys (user-created, not tracked by git)
 ├── .env.example              # Template for environment variables
 ├── meme_dubber.py            # Main application script
@@ -222,7 +259,7 @@ python meme_dubber.py
 ### 5. Adjust `f0_up_key` (Pitch Control)
 `f0_up_key` controls the pitch shift (in semitones) applied during RVC voice conversion.
 
-* Basic Meaning
+#### Basic Meaning
 
 | Value | Effect |
 | --- | --- |
@@ -231,15 +268,14 @@ python meme_dubber.py
 | `< 0` | Lowers pitch (deeper voice) |
 
 
-* Suggested Values by Scenario:  
+#### Suggested Values (Based on This Model)
+The optimal value of `f0_up_key` depends on the fundamental pitch characteristics of the input TTS audio.
 
-| Scenario | Suggested `f0_up_key` |
-| --- | --- |
-| Male → Female | `+5 ~ +12` |
-| Female → Male | `-5 ~ -12` |
-| Male → Higher-pitched Male | `+2 ~ +5` |
-| Female → Lower-pitched Female | `-2 ~ -5` |
-| Pitch already matches target | `0` |
+| Input Source | Suggested `f0_up_key` | Rationale |
+| --- | --- | --- |
+| **gTTS** | `-14` | gTTS output tends to have a higher fundamental pitch, requiring a larger downward shift to match the target voice. |
+| **ChatTTS** | `-5` | ChatTTS produces audio with a pitch closer to natural speech, so only a moderate adjustment is needed. |
+
 ---
 
 (以下再改)
