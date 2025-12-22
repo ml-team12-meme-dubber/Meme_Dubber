@@ -306,14 +306,15 @@ After running the application, the system produces the following outputs:
 The voice-converted audio can be previewed and downloaded via the Gradio interface.
 
 
-### Demo 
+### Demo
 
-- **With text**: Extracts text from the meme image
-![Meme with text](images/Output_with_text_Meme.png)
+- **With text**: Extracts text from the meme image  
+  ![Meme with text](images/Output_with_text_Meme.png)
 
 - **Without text**: Generates meme-style dialogue  
-![Meme without text](images/Output_without_text_Meme.png)
+  ![Meme without text](images/Output_without_text_Meme.png)
 
+Converted audio outputs are available in the **Releases** section.
 
 ---
 
