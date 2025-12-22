@@ -41,7 +41,7 @@ conda activate Meme_env
 ### 2. Install PyTorch:
 Install PyTorch according to whether you use **CPU** or **GPU**.
 
-* CPU version:
+* **CPU version**:
 ```bash
 pip install torch==2.9.0+cpu torchaudio==2.9.0+cpu torchvision==0.24.0+cpu --index-url https://download.pytorch.org/whl/cpu
 ```
@@ -51,8 +51,8 @@ pip install torch==2.9.0+cpu torchaudio==2.9.0+cpu torchvision==0.24.0+cpu --ind
 pip install torch torchvision torchaudio --index-url https://download.pytorch.org/whl/cu118
 ```
 
-> **Why CUDA 11.8?**
-> RVC depends on multiple third-party libraries (e.g., PyTorch, faiss, fairseq),
+> **Why CUDA 11.8?**  
+> RVC depends on multiple third-party libraries (e.g., PyTorch, faiss, fairseq),  
 > and **CUDA 11.8 is the only version that has been verified to work reliably**
 > with the complete RVC inference pipeline.
 
@@ -74,10 +74,24 @@ git clone https://github.com/ml-team12-meme-dubber/Meme_Dubber Meme_Dubber
 cd Meme_Dubber
 pip install -r requirements.txt
 ```
-This will install: (再改)
-* Common packages such as librosa, soundfile, scikit-learn, faiss-cpu
-* fairseq from GitHub (requires C++ compilation)
-* The inferrvc package (in .whl format)
+
+This will install the following key dependencies:
+
+- **fairseq (installed from GitHub, requires C++ compilation)**
+    
+    Used to extract **content features (semantic representations)** from input audio, which serve as the intermediate representation in the RVC pipeline.
+    
+- **faiss-cpu**
+    
+    Performs efficient **K-nearest neighbor (KNN) search** on the feature index, enabling fast similarity matching during voice conversion inference.
+    
+- **inferrvc (.whl package)**
+    
+    The core RVC inference package that integrates feature extraction, index lookup, and neural voice conversion into a unified pipeline.
+    
+- **Common audio & ML libraries**
+    
+    Including `librosa`, `soundfile`, and `scikit-learn`, which are used for audio processing, feature handling, and utility functions.
 
 ### 5. Downgrade pip and Install Compatible Package Versions (to Avoid Dependency Conflicts):
 To avoid dependency conflicts between `gradio`, `gradio_client`, `websockets`, and `google-genai`, it is recommended to downgrade pip and install specific versions of these packages:
