@@ -205,8 +205,7 @@ conda activate Meme_env
 > [Hugging Face (example)](https://huggingface.co/models?other=rvc&utm_source).
 
 
-Please download the following two files from the  
-[**Releases page**](https://github.com/ml-team12-meme-dubber/Meme_Dubber/releases/tag/RVC_model%26index):
+Please download the following two files from the [**Releases page**](https://github.com/ml-team12-meme-dubber/Meme_Dubber/releases/tag/RVC_model%26index):
 
 - `Teacher_infer.pth` — RVC model weights  
 - `Teacher_infer.index` — RVC voice feature index
@@ -242,7 +241,8 @@ python meme_dubber.py
 ```
 
 
-### 3. Open your browser and navigate to:
+### 3. Open the Web Interface:
+Open your browser and navigate to:
    ```
    http://127.0.0.1:7860
    ```
@@ -261,33 +261,28 @@ python meme_dubber.py
 
 | Feature | gTTS | ChatTTS |
 |---------|------|---------|
-| Speed | Fast | Slower (initial model download needed) |
+| Speed | Fast | Slower (initial model download) |
 | Audio Quality | Good | More natural |
 | Languages | Many (100+) | Chinese/English |
-| Resource Usage | Low | High (~2GB models) |
 | Internet | Required | Not required after setup |
+| Resource Usage | Low | High (~2GB models) |
 | Output Format | MP3 | WAV (24kHz) |
 
 
 ### 5. Adjust `f0_up_key` (Pitch Control)
-`f0_up_key` controls the pitch shift (in semitones) applied during RVC voice conversion.
+`f0_up_key` controls the pitch shift (in semitones) applied when converting TTS audio into a custom voice using RVC.
 
-#### Basic Meaning
+* Use 0 for no pitch change
 
-| Value | Effect |
-| --- | --- |
-| `0` | No pitch change |
-| `> 0` | Raises pitch (brighter voice) |
-| `< 0` | Lowers pitch (deeper voice) |
+* Use a negative value to lower the pitch
 
+* Use a positive value to raise the pitch
 
-#### Suggested Values (Based on This Model)
-The optimal value of `f0_up_key` depends on the fundamental pitch characteristics of the input TTS audio.
+Suggested values for the provided RVC model:
 
-| Input Source | Suggested `f0_up_key` | Rationale |
-| --- | --- | --- |
-| **gTTS** | `-14` | gTTS output tends to have a higher fundamental pitch, requiring a larger downward shift to match the target voice. |
-| **ChatTTS** | `-5` | ChatTTS produces audio with a pitch closer to natural speech, so only a moderate adjustment is needed. |
+* **gTTS**: `-14`
+
+* **ChatTTS**: `-5`
 
 
 ---
@@ -356,7 +351,7 @@ Meme Image
 
 ---
 
----
+
 
 (以下再改)
 
