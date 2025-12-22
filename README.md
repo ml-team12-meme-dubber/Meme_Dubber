@@ -210,7 +210,7 @@ conda activate Meme_env
 > [Hugging Face (example)](https://huggingface.co/models?other=rvc&utm_source).
 
 
-Please download the following two files from the [**Releases page**](https://github.com/ml-team12-meme-dubber/Meme_Dubber/releases/tag/RVC_model%26index):
+Please download the following two files from the [**Releases page**](https://github.com/ml-team12-meme-dubber/Meme_Dubber/releases/tag/model_index_output):
 
 - `Teacher_infer.pth` — RVC model weights  
 - `Teacher_infer.index` — RVC voice feature index
@@ -314,8 +314,7 @@ The voice-converted audio can be previewed and downloaded via the Gradio interfa
 - **Without text**: Generates meme-style dialogue  
   ![Meme without text](images/Output_without_text_Meme.png)
 
-Converted audio outputs are available in the **Releases** section.
-
+Converted audio outputs are available in the [**Releases section**](https://github.com/ml-team12-meme-dubber/Meme_Dubber/releases/tag/model_index_output).
 ---
 
 ## Development
