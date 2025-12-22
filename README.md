@@ -314,7 +314,9 @@ The voice-converted audio can be previewed and downloaded via the Gradio interfa
 - **Without text**: Generates meme-style dialogue  
   ![Meme without text](images/Output_without_text_Meme.png)
 
-Converted audio outputs are available in the [**Releases section**](https://github.com/ml-team12-meme-dubber/Meme_Dubber/releases/tag/model_index_output).
+#### Converted audio outputs are available in the [**Releases section**](https://github.com/ml-team12-meme-dubber/Meme_Dubber/releases/tag/model_index_output).
+
+
 ---
 
 ## Development
