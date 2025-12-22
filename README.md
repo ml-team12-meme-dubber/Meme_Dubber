@@ -272,7 +272,7 @@ Open your browser and navigate to:
 ### 5. Adjust `f0_up_key` (Pitch Control)
 `f0_up_key` controls the pitch shift (in semitones) applied when converting TTS audio into a custom voice using RVC.
 
-* Use 0 for no pitch change
+* Use `0` for no pitch change
 
 * Use a negative value to lower the pitch
 
@@ -283,6 +283,11 @@ Suggested values for the provided RVC model:
 * **gTTS**: `-14`
 
 * **ChatTTS**: `-5`
+
+
+---
+
+## Results/ Output ?
 
 
 ---
@@ -318,95 +323,81 @@ Meme Image
 ---
 
 ## How It Works
-### Text Extraction Pipeline
-1. **Image Upload**
-   User uploads a meme image via the Gradio interface
 
-2. **AI Analysis**
-   Google Gemini 2.5 Flash analyzes the image using multimodal thinking mode
+### Text Extraction & Dialogue Generation
 
-3. **Smart Detection**
-   If the image contains clear text → extract it directly  
-   If not → generate a meme-style dialogue based on image content
+1. **Meme Image Input**  
+   The user uploads a meme image through the Gradio web interface.
 
-4. **Language Detection**
-   Automatically detects language (e.g., en, zh-tw, ja, es, etc.)
+2. **Multimodal Analysis**  
+   The image is analyzed by **Google Gemini 2.5 Flash**, which understands both visual content and embedded text.
 
-5. **JSON Output**
-   Returns structured data including extracted/generated text and language code
+3. **Adaptive Text Handling**  
+   - If clear text is detected, it is extracted directly.  
+   - Otherwise, Gemini generates a meme-style dialogue based on the image content.
 
-### Audio Generation Pipeline
-1. **TTS Selection**
-   User selects either gTTS or ChatTTS as the speech engine
+4. **Structured Output**  
+   The system produces structured text content along with detected language information.
 
-2. **Audio Synthesis**
-   * gTTS → sends text to Google’s cloud TTS API → receives MP3
-   * ChatTTS → runs local PyTorch model → generates 24 kHz WAV
 
-3. **Audio Output**
-   Final audio is saved locally and played in-browser
+### Audio Generation & Voice Conversion
 
-4. **Download**
-   Users can preview and download the audio file directly from the web interface
+1. **TTS Selection and Speech Synthesis**  
+   The user selects a text-to-speech engine (gTTS or ChatTTS) to synthesize speech:  
+   - **gTTS** generates speech via Google’s cloud-based TTS service.  
+   - **ChatTTS** synthesizes speech locally using a PyTorch-based model.
+
+2. **Voice Conversion (Optional)**  
+   The synthesized speech is transformed into a target voice using **RVC-based voice conversion**.
+
+3. **Playback & Download**  
+   The final audio is played in the browser and can be downloaded by the user.
+
 
 ---
 
 
-
-(以下再改)
-
 ## Troubleshooting
 
-### "GOOGLE_API_KEY not found" error
-- Make sure you created a `.env` file in the project root
+### Cannot install dependencies (`pip install -r requirements.txt` fails)
+- On Windows, this is usually caused by **not running the terminal as Administrator**
+- Please reopen the terminal **as Administrator** and retry the installation
+
+#### "GOOGLE_API_KEY not found"
+- Make sure a `.env` file exists in the project root  
+  (see **Installation – Step 7** for setup instructions)
 - Verify your API key is correctly set in the `.env` file: `GOOGLE_API_KEY=your_key_here`
-- Check there are no extra spaces or quotes around the key
-- Restart the application after creating/modifying `.env`
+- Ensure there are no extra spaces or quotation marks
+- Restart the application after updating the `.env` file
 
-### "No text found in the image" error
-- The image may not contain readable text
-- Try a different meme image with clearer text
-- The AI will attempt to generate meme-style dialogue if no text is detected
+#### "No text found in the image" error
+- The Google Gemini API key may be invalid or expired
+- Try generating a new API key and updating the `.env` file
+- Restart the application after changing the API key
 
-### ChatTTS model download issues
-- ChatTTS downloads models (~2GB) on first use to `asset/` directory
-- Ensure you have stable internet connection
-- Make sure you have at least 2GB free disk space
-- Check write permissions in the project directory
-- If download fails, delete `asset/` folder and try again
+#### ChatTTS takes a long time on first run
+- ChatTTS downloads model files (~2GB) during the first execution
+- This is expected behavior; please wait until the download completes
 
-### ChatTTS fails to load or crashes
-- ChatTTS requires more system resources and dependencies
-- Ensure PyTorch is properly installed: `python -c "import torch; print(torch.__version__)"`
-- Try using gTTS as a faster alternative
-- Check if you have enough RAM (recommended: 4GB+)
-- Verify all dependencies are installed in the conda environment
-
-### Network errors with gTTS
-- gTTS requires internet connection to Google's TTS service
+#### gTTS does not work
+- gTTS requires an active internet connection
 - Check your network connectivity
-- If behind a proxy, configure proxy settings
-- Consider using ChatTTS for offline processing (after initial model download)
-
-### "Audio file failed to create" error
-- Check disk space availability
-- Verify write permissions in the project directory
-- Try the alternative TTS engine
-- Check terminal output for detailed error messages
-
-### Gradio interface won't open
-- Make sure port 7860 is not in use: `lsof -i :7860`
-- Try accessing via http://localhost:7860 instead of 127.0.0.1
-- Check firewall settings
-- Look for error messages in terminal output
-
+- If offline usage is needed, consider switching to **ChatTTS** (after initial setup)
 
 ---
 
 ## Reference Repositories
-Below are the open-source repositories referenced by our project:
+The following open-source repositories were referenced or utilized in this project:
 
-- https://github.com/YY-BOY/ml
-- https://github.com/RVC-Project/Retrieval-based-Voice-Conversion-WebUI 
-- https://github.com/CircuitCM/RVC-inference  
+* **Gradio-based Interface (developed by a team member)**  
+  Used as the foundation for the web-based user interface.  
+  https://github.com/YY-BOY/ml
+
+* **RVC WebUI**  
+  Used for training voice conversion models and building feature indices.  
+  https://github.com/RVC-Project/Retrieval-based-Voice-Conversion-WebUI
+
+* **RVC Inference**  
+  Referenced for integrating the RVC inference pipeline into the project.  
+  https://github.com/CircuitCM/RVC-inference
 
