@@ -77,6 +77,7 @@ gradio_cached_examples/
 flagged/
 
 # Asset folder
+asset/
 asset/"index/Teacher_infer.index" 
 "asset/Embed.safetensors" 
 "asset/gpt/model.safetensors" 

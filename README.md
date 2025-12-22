@@ -29,8 +29,8 @@ The project includes a user-friendly Gradio web interface, allowing users to upl
 
 ## Installation
 Installing `fairseq` on Windows requires compiling C++ code.   
-If you do **not** run the terminal as an **Administrator**, the installation may fail.  
-Therefore, it is strongly recommended to run the terminal as **Administrator** throughout the entire process.
+If you do not run the terminal as an Administrator, the installation may fail.  
+Therefore, it is **strongly recommended** to run the terminal as ***Administrator*** throughout the entire process.
 
 ### 1. Create Conda Environment and Install Python:
 ```bash
@@ -39,15 +39,22 @@ conda activate Meme_env
 ```
 
 ### 2. Install PyTorch:
-* **CPU version**:
+Install PyTorch according to whether you use **CPU** or **GPU**.
+
+* CPU version:
 ```bash
 pip install torch==2.9.0+cpu torchaudio==2.9.0+cpu torchvision==0.24.0+cpu --index-url https://download.pytorch.org/whl/cpu
 ```
 
-* **GPU version (CUDA 11.8)**:
+* **GPU version (CUDA 11.8 only — required for RVC)**:
 ```bash
 pip install torch torchvision torchaudio --index-url https://download.pytorch.org/whl/cu118
 ```
+
+> **Why CUDA 11.8?**
+> RVC depends on multiple third-party libraries (e.g., PyTorch, faiss, fairseq),
+> and **CUDA 11.8 is the only version that has been verified to work reliably**
+> with the complete RVC inference pipeline.
 
 ### 3. Install Microsoft Visual C++ Build Tools (C++ Compiler):  
 Installing `fairseq` requires compiling C++ extensions, so Windows users must install a C++ compiler.
