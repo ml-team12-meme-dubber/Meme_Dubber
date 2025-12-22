@@ -6,16 +6,16 @@
 ## Features
 
 * **Text extraction & dialogue generation**  
-  Extracts existing text from meme images or generates meme-style dialogue using the **Google Gemini API**.
+  Extracts existing text from meme images or generates meme-style dialogue using the Google Gemini API.
 
 * **Multiple TTS backends**  
-  Converts text into speech using either **gTTS** or **ChatTTS**.
+  Converts text into speech using either gTTS or ChatTTS.
 
 * **Custom voice conversion (RVC)**  
-  Transforms synthesized speech into a target voice using **RVC models** trained via **RVC WebUI**.
+  Transforms synthesized speech into a target voice using RVC models trained via RVC WebUI.
 
 * **Web-based user interface**  
-  Provides a **Gradio web interface** for uploading images, selecting TTS engines, and downloading dubbed audio.
+  Provides a Gradio web interface for uploading images, selecting TTS engines, and downloading dubbed audio.
 
 ---
 
@@ -82,11 +82,11 @@ This will install the following key dependencies:
 
 - **fairseq (installed from GitHub, requires C++ compilation)**
     
-    Used to extract **content features (semantic representations)** from input audio, which serve as the intermediate representation in the RVC pipeline.
+    Used to extract content features (semantic representations) from input audio, which serve as the intermediate representation in the RVC pipeline.
     
 - **faiss-cpu**
     
-    Performs efficient **K-nearest neighbor (KNN) search** on the feature index, enabling fast similarity matching during voice conversion inference.
+    Performs efficient K-nearest neighbor (KNN) search on the feature index, enabling fast similarity matching during voice conversion inference.
     
 - **inferrvc (.whl package)**
     
@@ -198,9 +198,9 @@ conda activate Meme_env
 ```
 
 ### 1. Placing Your RVC Models
-> **Note:** This project is intended for **educational and personal use only**.  
+> **Note:** This project is intended for educational and personal use only.  
 > For demonstration purposes, the RVC model and index files are provided in the **Release** section.  
-> Due to **privacy concerns**, these files will be **removed after the project evaluation is completed**.  
+> Due to privacy concerns, these files will be **removed after the project evaluation is completed**.  
 > If you would like to reproduce this project in the future, please download publicly available RVC models from  
 > [Hugging Face (example)](https://huggingface.co/models?other=rvc&utm_source).
 
@@ -241,19 +241,32 @@ Meme_Dubber/
 python meme_dubber.py
 ```
 
+
 ### 3. Open your browser and navigate to:
    ```
    http://127.0.0.1:7860
    ```
 
+
 ### 4. Generate audio:
 - Upload a meme image (or paste from clipboard)
-- Select your preferred TTS engine:
-   - **gTTS**: Faster, requires internet
-   - **ChatTTS**: Better quality, works offline (after initial setup)
+- Select a TTS engine:
+   - **gTTS**: Faster, requires an internet connection
+   - **ChatTTS**: Higher audio quality, works offline after initial setup
 - Click "Generate Audio Dub"
 - View the extracted/generated text
-- Listen to and download the generated audio!
+- Listen to and download the generated audio
+
+#### TTS Engine Comparison
+
+| Feature | gTTS | ChatTTS |
+|---------|------|---------|
+| Speed | Fast | Slower (initial model download needed) |
+| Audio Quality | Good | More natural |
+| Languages | Many (100+) | Chinese/English |
+| Resource Usage | Low | High (~2GB models) |
+| Internet | Required | Not required after setup |
+| Output Format | MP3 | WAV (24kHz) |
 
 
 ### 5. Adjust `f0_up_key` (Pitch Control)
@@ -275,6 +288,73 @@ The optimal value of `f0_up_key` depends on the fundamental pitch characteristic
 | --- | --- | --- |
 | **gTTS** | `-14` | gTTS output tends to have a higher fundamental pitch, requiring a larger downward shift to match the target voice. |
 | **ChatTTS** | `-5` | ChatTTS produces audio with a pitch closer to natural speech, so only a moderate adjustment is needed. |
+
+
+---
+
+## Development
+
+The development focuses on integrating multiple components into a unified end-to-end pipeline, including multimodal text understanding, text-to-speech synthesis, and voice conversion.
+
+### Core Technologies
+
+* **Google Gemini 2.5 Flash** — multimodal model for image understanding and dialogue generation
+
+* **gTTS / ChatTTS** — text-to-speech backends for speech synthesis
+
+* **RVC WebUI** — used offline to train voice models and build feature indices  
+
+* **RVC inference** — converts synthesized speech into a target voice using trained voice models 
+
+* **Gradio** — web-based interface for rapid prototyping and user interaction  
+
+* **PyTorch & Transformers** — backend frameworks supporting ChatTTS and model inference
+
+### Processing Pipeline
+
+```text
+Meme Image
+ → Gemini (OCR / dialogue)
+ → TTS (gTTS / ChatTTS)
+ → RVC (voice conversion)
+ → Output audio
+```
+
+---
+
+## How It Works
+### Text Extraction Pipeline
+1. **Image Upload**
+   User uploads a meme image via the Gradio interface
+
+2. **AI Analysis**
+   Google Gemini 2.5 Flash analyzes the image using multimodal thinking mode
+
+3. **Smart Detection**
+   If the image contains clear text → extract it directly  
+   If not → generate a meme-style dialogue based on image content
+
+4. **Language Detection**
+   Automatically detects language (e.g., en, zh-tw, ja, es, etc.)
+
+5. **JSON Output**
+   Returns structured data including extracted/generated text and language code
+
+### Audio Generation Pipeline
+1. **TTS Selection**
+   User selects either gTTS or ChatTTS as the speech engine
+
+2. **Audio Synthesis**
+   * gTTS → sends text to Google’s cloud TTS API → receives MP3
+   * ChatTTS → runs local PyTorch model → generates 24 kHz WAV
+
+3. **Audio Output**
+   Final audio is saved locally and played in-browser
+
+4. **Download**
+   Users can preview and download the audio file directly from the web interface
+
+---
 
 ---
 
@@ -325,71 +405,6 @@ The optimal value of `f0_up_key` depends on the fundamental pitch characteristic
 - Check firewall settings
 - Look for error messages in terminal output
 
----
-
-## Development
-
-This project was originally based on a Google Colab notebook, and has been converted into a standalone local web application with the following key enhancements:
-
-### Key Technologies
-
-* Google Gemini 2.5 Flash — advanced multimodal AI for image and text understanding
-
-* Thinking Mode — extended token budget (1024 tokens) improves text extraction accuracy
-
-* Gradio — web UI framework for fast prototyping, using the “Soft” theme
-
-* PyTorch — powers the neural network behind ChatTTS
-
-* Transformers — Hugging Face library used for model loading and inference
-
----
-
-## How It Works
-### Text Extraction Pipeline
-1. **Image Upload**
-   User uploads a meme image via the Gradio interface
-
-2. **AI Analysis**
-   Google Gemini 2.5 Flash analyzes the image using multimodal thinking mode
-
-3. **Smart Detection**
-   If the image contains clear text → extract it directly  
-   If not → generate a meme-style dialogue based on image content
-
-4. **Language Detection**
-   Automatically detects language (e.g., en, zh-tw, ja, es, etc.)
-
-5. **JSON Output**
-   Returns structured data including extracted/generated text and language code
-
-### Audio Generation Pipeline
-1. **TTS Selection**
-   User selects either gTTS or ChatTTS as the speech engine
-
-2. **Audio Synthesis**
-   * gTTS → sends text to Google’s cloud TTS API → receives MP3
-   * ChatTTS → runs local PyTorch model → generates 24 kHz WAV
-
-3. **Audio Output**
-   Final audio is saved locally and played in-browser
-
-4. **Download**
-   Users can preview and download the audio file directly from the web interface
-
----
-
-## TTS Engine Comparison
-
-| Feature | gTTS | ChatTTS |
-|---------|------|---------|
-| Speed | Fast | Slower (first run requires model download) |
-| Quality | Good | Excellent, more natural |
-| Languages | Many (100+) | Focus on Chinese/English |
-| Requirements | Lightweight (~10MB) | Requires more resources (~2GB models) |
-| Network | Cloud-based (requires internet) | Local processing (offline after setup) |
-| Output Format | MP3 | WAV (24kHz) |
-| First-time Setup | Ready to use | Downloads models (~2GB) |
 
 ---
 
