@@ -323,7 +323,6 @@ Open your browser and navigate to:
 |---------|------|---------|
 | Speed | Fast | Slower (initial model download) |
 | Audio Quality | Good | More natural |
-| Languages | Many (100+) | Chinese/English |
 | Internet | Required | Not required after setup |
 | Resource Usage | Low | High (~2GB models) |
 | Output Format | MP3 | WAV (24kHz) |
