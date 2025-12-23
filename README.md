@@ -36,9 +36,9 @@
 ---
 
 ## Installation
-Installing `fairseq` on Windows requires compiling C++ code.   
-If you do not run the terminal as an Administrator, the installation may fail.  
-Therefore, it is **strongly recommended** to run the terminal as ***Administrator*** throughout the entire process.
+Installing `fairseq` on Windows requires compiling C++ extensions.   
+If the terminal is not run with **Administrator privileges**, the installation may fail. 
+Therefore, it is **strongly recommended** to run the terminal as ***Administrator*** throughout the entire installation process.
 
 ### 1. Create Conda Environment and Install Python:
 ```bash
@@ -239,7 +239,7 @@ ffmpeg -version
 ffprobe -version
 ```
 
-If version information is displayed, FFmpeg is successfully installed and available in your system PATH..
+If version information is displayed, FFmpeg is successfully installed and available in your system PATH.
 
 
 ---
@@ -466,8 +466,9 @@ Meme Image
 ## Reference Repositories
 The following open-source repositories were referenced or utilized in this project:
 
-* **Gradio-based Interface (developed by a team member)**  
-  Used as the foundation for the web-based user interface.  
+* **Gradio-based Multimodal Interface with TTS and Gemini (developed by a team member)**  
+  Used as the foundation for the web-based interface, integrating image-to-text analysis via Gemini
+  and text-to-speech (TTS) audio generation. 
   https://github.com/YY-BOY/ml
 
 * **RVC WebUI**  
