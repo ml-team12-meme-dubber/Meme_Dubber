@@ -77,6 +77,11 @@ Follow these steps:
 > macOS and Linux usually come with a C++ compiler preinstalled, so this step is generally not needed on those systems.
 
 ### 4. Clone the Repository and Install Dependencies:
+
+> **Important**  
+> Remember to open the terminal with **administrator privileges** and make sure the correct Conda environment is activated before proceeding.  
+
+
 ```bash
 git clone https://github.com/ml-team12-meme-dubber/Meme_Dubber Meme_Dubber
 cd Meme_Dubber
@@ -104,11 +109,18 @@ This will install the following key dependencies:
 
 ### 5. Downgrade pip and Install Compatible Package Versions (to Avoid Dependency Conflicts):
 To avoid dependency conflicts between `gradio`, `gradio_client`, `websockets`, and `google-genai`, it is recommended to downgrade pip and install specific versions of these packages:
+
+#### (1) Downgrade pip
+
 ```bash
 # Downgrade pip to improve compatibility
 python -m pip install pip==23.2.1
+```
 
-# Install specific compatible versions
+#### (2) Install specific compatible versions (Order Matters)
+Please install the following packages in the exact order shown below:
+
+```bash
 pip install gradio==4.19.2
 pip install gradio_client==0.10.1
 pip install websockets==15.0.1
@@ -175,31 +187,69 @@ GOOGLE_API_KEY=your_actual_api_key_here
 Replace `your_actual_api_key_here` with the Google API key you obtained.
 
 
-### 8. Install ffmpeg (Windows Only)
+### 8. Install FFmpeg (Windows Only)
 
-> **Note (Windows users):**  
-> ffmpeg is required for audio processing.  
-> Please make sure `ffmpeg` is installed and available in your system `PATH`.
+FFmpeg is required for audio processing (e.g., TTS generation, audio conversion, and playback).
+
+> **Note:**  
+> The main FFmpeg website highlights source code downloads, which are **not directly usable on Windows**. 
+> Please make sure to download a **precompiled Windows binary**, not the source code.
 
 
-1. Download ffmpeg from the official website:  
-   https://ffmpeg.org/download.html
+#### Step 1. Download ffmpeg (Windows precompiled build) 
+1. Go to the official FFmpeg download page:
+  https://ffmpeg.org/download.html
+  
+2. Under Get packages & executable files, click Windows.
 
-2. Extract the archive and add the `bin/` directory to your system `PATH`.
+3. Select **Windows builds by BtbN**.
 
-3. Verify installation:
+4. Download the following file (or an equivalent Windows 64-bit ZIP build):
+
+```makefile
+ffmpeg-master-latest-win64-gpl-shared.zip
+```
+
+> ⚠️ Do NOT download files with extensions like `.tar.xz`, `.tar.gz`, or any Source code archives.
+
+
+#### Step 2. Extract and configure PATH
+
+1. Extract the ZIP file (e.g., to `C:\ffmpeg\`).
+
+2. Make sure the following file exists:
+```text
+C:\ffmpeg\bin\ffmpeg.exe
+```
+
+3. Add the `bin` directory to your system **PATH**:
+```text
+C:\ffmpeg\bin
+```
+
+#### Step 3. Verify installation
+
+After updating the system PATH, restart all terminals and any running Python processes to ensure the changes take effect.
+
+Then open a new terminal and run:
+
 ```bash
 ffmpeg -version
+ffprobe -version
 ```
+
+If version information is displayed, FFmpeg is successfully installed and available in your system PATH..
+
 
 ---
 
 ## Usage
 
-Make sure your conda environment is activated before running:
+Make sure the required Conda environment is activated before running the project.
 
 ```bash
 conda activate Meme_env
+cd Meme_Dubber
 ```
 
 ### 1. Placing Your RVC Models
