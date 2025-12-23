@@ -129,7 +129,7 @@ pip install google-genai==1.52.0
 
 ### 6. Modify `inferrvc` Source Code:
 
-#### (1) Enable CPU Inference Mode Works Properly
+#### (1) Enable CPU Mode Works Properly
 * Open the following file:  
 ```bash
 <your Conda environment path>\Lib\site-packages\inferrvc\pipeline.py
@@ -146,7 +146,7 @@ device = "cuda" if torch.cuda.is_available() else "cpu"
 bh, ah = torch.from_numpy(bh).to(device), torch.from_numpy(ah).to(device)
 ```
 
-#### (2) Ensure GPU Mode Works Properly
+#### (2) Enable GPU Mode Works Properly
 `torchaudio`'s resample module does not support FP16 tensors and may raise an error like:
 ```bash
 RuntimeError: Input type (torch.cuda.HalfTensor) and weight type (torch.cuda.FloatTensor) should be the same
